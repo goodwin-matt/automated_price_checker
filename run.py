@@ -66,7 +66,11 @@ def price_parser(ctx, site_file, output_file):
             driver.get(site_df['url'].iloc[i])
             # get price and put into float
             price = driver.find_elements_by_xpath("//span[@class='price-format__large-symbols']/following-sibling::span")
-            price = float(price[0].text + "." + price[1].text)
+            try:
+                price = float(price[0].text + "." + price[1].text)
+            except:
+                logging.info('Price not found, skipping url')
+                price = None
 
         else:
             raise ValueError('Other sites have not been implemented yet.')
